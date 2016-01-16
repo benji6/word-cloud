@@ -11,7 +11,7 @@ const setStyleProperty = setStylePropertyWithUnits(identity)
 
 export const createDocumentFragment = document.createDocumentFragment.bind(document)
 export const createElement = document.createElement.bind(document)
-export const innerText = curry((str, el) => (el.innerText = str, el))
+export const textContent = curry((str, el) => (el.textContent = str, el))
 export const querySelector = document.querySelector.bind(document)
 
 export const setBottom = setStylePropertyInPx('bottom')

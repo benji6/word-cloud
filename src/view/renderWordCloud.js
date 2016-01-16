@@ -2,18 +2,18 @@ import {compose, forEach} from 'ramda'
 import {
   createDocumentFragment,
   createElement,
-  innerText,
   setBottom,
   setColor,
   setFontSize,
   setLeft,
-  setPosition
+  setPosition,
+  textContent
 } from '../view/dom'
 
 export default (words, containerEl) => {
   const documentFragment = createDocumentFragment()
   forEach(({color, label, size, x, y}) => {
-    const el = innerText(label, createElement('span'))
+    const el = textContent(label, createElement('span'))
     documentFragment.appendChild(el)
     compose(
       setBottom(y),
