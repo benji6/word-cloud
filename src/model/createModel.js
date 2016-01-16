@@ -1,12 +1,16 @@
 import {compose, head, last, map, sortBy, sum, values} from 'ramda'
-import {createElement, innerText} from '../view/dom'
 import arrangeInCloud from './arrangeInCloud'
 import color from './color'
 import quantizeLogarithmically from '../utils/quantizeLogarithmically'
 
 const sortTopics = sortBy(topic => -topic.volume)
 
-export default (topics, wordCloudContainerEl) => {
+export default ({
+  topics,
+  computeTextDimensions,
+  containerHeight,
+  containerWidth
+}) => {
   const sortedTopics = sortTopics(topics)
   const maxVolume = head(sortedTopics).volume
   const minVolume = last(sortedTopics).volume
@@ -15,23 +19,10 @@ export default (topics, wordCloudContainerEl) => {
     quantizeLogarithmically(6, minVolume, maxVolume)
   )
 
-  // sadly to get the dimensions we have to append to the DOM
-  // but we do that invisibly and without triggering reflows
-  const dimensions = (str, size) => {
-    const el = innerText(str, createElement('span'))
-    wordCloudContainerEl.appendChild(el)
-    el.style.fontSize = size + 'px'
-    el.style.position = 'fixed'
-    el.style.visibility = 'hidden'
-    const {width, height} = el.getBoundingClientRect()
-    wordCloudContainerEl.removeChild(el)
-    return {width, height}
-  }
-
   const createModel = compose(
     arrangeInCloud({
-      containerHeight: wordCloudContainerEl.clientHeight,
-      containerWidth: wordCloudContainerEl.clientWidth
+      containerHeight,
+      containerWidth
     }),
     map(({
       label,
@@ -41,7 +32,7 @@ export default (topics, wordCloudContainerEl) => {
       volume
     }) => {
       const size = computeSize(volume)
-      const {height, width} = dimensions(label, size)
+      const {height, width} = computeTextDimensions(label, size)
       return {
         color: color(sentimentScore),
         height,
