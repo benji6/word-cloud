@@ -1,7 +1,7 @@
 import {forEach} from 'ramda'
 import {createDocumentFragment, createElement, innerText} from '../view/dom'
 
-const rems = x => `${x}rem`
+const px = x => `${x}px`
 
 export default (words, containerEl) => {
   const documentFragment = createDocumentFragment()
@@ -9,8 +9,8 @@ export default (words, containerEl) => {
     const el = innerText(label, createElement('span'))
     documentFragment.appendChild(el)
     el.style.position = 'absolute'
-    el.style.top = rems(y)
-    el.style.left = rems(x)
+    el.style.bottom = px(y)
+    el.style.left = px(x)
   }, words)
   containerEl.appendChild(documentFragment)
 }

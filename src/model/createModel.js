@@ -21,7 +21,10 @@ export default (topics, wordCloudContainerEl) => {
   }
 
   const createModel = compose(
-    arrangeInCloud,
+    arrangeInCloud({
+      containerHeight: wordCloudContainerEl.clientHeight,
+      containerWidth: wordCloudContainerEl.clientWidth
+    }),
     map(({
       label,
       sentiment,
