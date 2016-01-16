@@ -1,7 +1,7 @@
 import {compose, curry} from 'ramda'
 import {
+  addClass,
   createElement,
-  setFontSize,
   setPosition,
   setVisibility,
   textContent
@@ -12,10 +12,11 @@ import {
 export default curry((container, str, size) => {
   const el = compose(
     textContent(str),
-    setFontSize(size),
+    addClass(`word-cloud__word--size--${size}`),
+    addClass('word-cloud__word'),
     setPosition('fixed'),
     setVisibility('hidden')
-  )(createElement('span'))
+  )(createElement('button'))
 
   container.appendChild(el)
   const {width, height} = el.getBoundingClientRect()

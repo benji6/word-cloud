@@ -1,10 +1,8 @@
 import {
-  add,
   compose,
   head,
   last,
   map,
-  multiply,
   sum,
   values
 } from 'ramda'
@@ -22,11 +20,7 @@ export default ({
   const sortedTopics = sortTopics(topics)
   const maxVolume = head(sortedTopics).volume
   const minVolume = last(sortedTopics).volume
-  const computeSize = compose(
-    add(12),
-    multiply(6),
-    quantizeLogarithmically(6, minVolume, maxVolume)
-  )
+  const computeSize = quantizeLogarithmically(6, minVolume, maxVolume)
 
   return compose(
     arrangeInCloud({

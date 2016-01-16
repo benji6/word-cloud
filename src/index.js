@@ -4,7 +4,7 @@ import createModel from './model/createModel'
 import renderWordCloud from './view/renderWordCloud'
 import computeTextDimensions from './view/computeTextDimensions'
 
-const wordCloudContainerEl = querySelector('.js-word-cloud-container')
+const wordCloudContainerEl = querySelector('.js-word-cloud')
 
 renderWordCloud(
   createModel({
