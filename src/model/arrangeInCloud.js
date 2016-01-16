@@ -18,7 +18,9 @@ export default curry(({containerHeight, containerWidth}, rectangles) => {
   return reduce(
     (acc, rectangle) => {
       let x = rectangle
+      let count = 0
       do {
+        if (count++ > 1024) return acc
         x = placeCenter(
           Math.random() * (containerWidth - rectangle.width) + rectangle.width / 2,
           Math.random() * (containerHeight - rectangle.height) + rectangle.height / 2,

@@ -10,11 +10,19 @@ export default (topics, wordCloudContainerEl) => {
   const sortedTopics = sortTopics(topics)
   const maxVolume = head(sortedTopics).volume
   const minVolume = last(sortedTopics).volume
-  const computeSize = quantizeLogarithmically(6, minVolume, maxVolume)
+  const computeSize = compose(
+    x => 6 * x + 12,
+    quantizeLogarithmically(6, minVolume, maxVolume)
+  )
 
-  const dimensions = str => {
-    const el = wordCloudContainerEl
-      .appendChild(innerText(str, createElement('span')))
+  // sadly to get the dimensions we have to append to the DOM
+  // but we do that invisibly and without triggering reflows
+  const dimensions = (str, size) => {
+    const el = innerText(str, createElement('span'))
+    wordCloudContainerEl.appendChild(el)
+    el.style.fontSize = size + 'px'
+    el.style.position = 'fixed'
+    el.style.visibility = 'hidden'
     const {width, height} = el.getBoundingClientRect()
     wordCloudContainerEl.removeChild(el)
     return {width, height}
@@ -32,14 +40,15 @@ export default (topics, wordCloudContainerEl) => {
       sentimentScore,
       volume
     }) => {
-      const {height, width} = dimensions(label)
+      const size = computeSize(volume)
+      const {height, width} = dimensions(label, size)
       return {
-        color: color(sentiment),
+        color: color(sentimentScore),
         height,
         negativeMentions: negative,
         neutralMentions: neutral,
         positiveMentions: positive,
-        size: computeSize(volume),
+        size,
         label,
         totalMentions: sum(values(sentiment)),
         width
