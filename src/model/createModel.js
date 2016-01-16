@@ -1,16 +1,17 @@
 import {compose, head, last, map, sortBy, sum, values} from 'ramda'
-import {createElement, innerText} from './view/dom'
-import arrangeInCloud from './utils/arrangeInCloud'
-import color from './utils/color'
-import quantizeLogarithmically from './utils/quantizeLogarithmically'
+import {createElement, innerText} from '../view/dom'
+import arrangeInCloud from './arrangeInCloud'
+import color from './color'
+import quantizeLogarithmically from '../utils/quantizeLogarithmically'
+
+const sortTopics = sortBy(topic => -topic.volume)
 
 export default (topics, wordCloudContainerEl) => {
-  const sortedTopics = sortBy(a => -a.volume, topics)
-  const size = quantizeLogarithmically(
-    6,
-    last(sortedTopics).volume,
-    head(sortedTopics).volume
-  )
+  const sortedTopics = sortTopics(topics)
+  const maxVolume = head(sortedTopics).volume
+  const minVolume = last(sortedTopics).volume
+  const computeSize = quantizeLogarithmically(6, minVolume, maxVolume)
+
   const dimensions = str => {
     const el = wordCloudContainerEl
       .appendChild(innerText(str, createElement('span')))
@@ -18,6 +19,7 @@ export default (topics, wordCloudContainerEl) => {
     wordCloudContainerEl.removeChild(el)
     return {width, height}
   }
+
   const createModel = compose(
     arrangeInCloud,
     map(({
@@ -34,7 +36,7 @@ export default (topics, wordCloudContainerEl) => {
         negativeMentions: negative,
         neutralMentions: neutral,
         positiveMentions: positive,
-        size: size(volume),
+        size: computeSize(volume),
         label,
         totalMentions: sum(values(sentiment)),
         width
