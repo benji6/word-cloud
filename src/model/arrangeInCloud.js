@@ -1,4 +1,5 @@
 import {append, curry, head, reduce, tail} from 'ramda'
+import collides from './collides'
 
 const placeCenter = (x, y, shape) => ({
   ...shape,
@@ -16,11 +17,15 @@ export default curry(({containerHeight, containerWidth}, rectangles) => {
   const firstRectangle = head(rectangles)
   return reduce(
     (acc, rectangle) => {
-      return append(placeCenter(
-        Math.random() * (containerWidth - rectangle.width) + rectangle.width / 2,
-        Math.random() * (containerHeight - rectangle.height) + rectangle.height / 2,
-        rectangle
-      ), acc)
+      let x = rectangle
+      do {
+        x = placeCenter(
+          Math.random() * (containerWidth - rectangle.width) + rectangle.width / 2,
+          Math.random() * (containerHeight - rectangle.height) + rectangle.height / 2,
+          rectangle
+        )
+      } while (collides(x, acc))
+      return append(x, acc)
     },
     [placeCenter(centerX, centerY, firstRectangle)],
     tail(rectangles)
