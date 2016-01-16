@@ -1,9 +1,17 @@
-import {compose, head, last, map, sortBy, sum, values} from 'ramda'
+import {
+  add,
+  compose,
+  head,
+  last,
+  map,
+  multiply,
+  sum,
+  values
+} from 'ramda'
 import arrangeInCloud from './arrangeInCloud'
 import color from './color'
 import quantizeLogarithmically from '../utils/quantizeLogarithmically'
-
-const sortTopics = sortBy(topic => -topic.volume)
+import sortTopics from './sortTopics'
 
 export default ({
   topics,
@@ -15,11 +23,12 @@ export default ({
   const maxVolume = head(sortedTopics).volume
   const minVolume = last(sortedTopics).volume
   const computeSize = compose(
-    x => 6 * x + 12,
+    add(12),
+    multiply(6),
     quantizeLogarithmically(6, minVolume, maxVolume)
   )
 
-  const createModel = compose(
+  return compose(
     arrangeInCloud({
       containerHeight,
       containerWidth
@@ -45,6 +54,5 @@ export default ({
         width
       }
     })
-  )
-  return createModel(sortedTopics)
+  )(sortedTopics)
 }
