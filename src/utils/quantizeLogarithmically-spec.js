@@ -1,6 +1,6 @@
 import test from 'ava'
 import 'babel-core/register'
-import {quantizeLogarithmically} from './helpers'
+import quantizeLogarithmically from './quantizeLogarithmically'
 
 test('quantizeLogarithmically - is curried', t => {
   t.is(typeof quantizeLogarithmically(6), 'function')
