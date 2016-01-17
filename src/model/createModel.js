@@ -1,11 +1,4 @@
-import {
-  compose,
-  head,
-  last,
-  map,
-  sum,
-  values
-} from 'ramda'
+import {compose, head, last, map, sum, values} from 'ramda'
 import arrangeInCloud from './arrangeInCloud'
 import color from './color'
 import quantizeLogarithmically from '../utils/quantizeLogarithmically'
