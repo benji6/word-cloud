@@ -32,7 +32,7 @@ const placeCenter = ({x, y, rectangle}) => ({
 // complete when no rectangles remain or positioning rules can no longer be met
 export default curry((containerDimensions, rectangles) => {
   const {containerHeight, containerWidth} = containerDimensions
-  const scalingFactor = last(rectangles).height / 2
+  const scalingFactor = last(rectangles).height
   const [centerX, centerY] = mapDivideBy2([containerWidth, containerHeight])
   const shiftOriginToBottomLeft = ({x, y}) => ({x: x + centerX, y: y + centerY})
   const maxRadius = hypoteneuse([centerX, centerY])
