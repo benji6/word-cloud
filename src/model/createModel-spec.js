@@ -38,7 +38,7 @@ test('createModel', t => {
     negativeMentions: 0,
     neutralMentions: 46,
     positiveMentions: 2,
-    size: 5,
+    size: 6,
     totalMentions: 48,
     x: 45,
     y: 45,
