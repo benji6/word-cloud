@@ -4,6 +4,8 @@
 
 ## Instructions
 
+App is being served [here](http://benji6.github.io/word-cloud/dist/)
+
 I'm using node 5, but I think this should work for any sensible version of node
 
 - install with `npm i`
