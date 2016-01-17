@@ -1,6 +1,6 @@
 import test from 'ava'
 import 'babel-core/register'
-import collides from './collides'
+import collides from './collidesWithAnotherRectangle'
 
 const testRectangle = {
   x: 100,
@@ -9,7 +9,7 @@ const testRectangle = {
   height: 10
 }
 
-test('collides', t => {
+test('collides - collision with other rectangles', t => {
   t.false(collides(testRectangle, [{
     x: 111,
     y: 100,

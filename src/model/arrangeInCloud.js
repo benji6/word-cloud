@@ -1,35 +1,68 @@
-import {append, curry, head, reduce, tail} from 'ramda'
-import collides from './collides'
+import {
+  append,
+  compose,
+  curry,
+  divide,
+  filter,
+  flip,
+  head,
+  last,
+  map,
+  multiply,
+  reduce,
+  transduce
+} from 'ramda'
+import collidesWithAnotherRectangle from './collidesWithAnotherRectangle'
+import collidesWithContainer from './collidesWithContainer'
+import fermatsSpiral from '../utils/fermatsSpiral'
+import goldenAngle from '../data/goldenAngle'
+import hypoteneuse from '../utils/hypoteneuse'
+import polarToCartesian from '../utils/polarToCartesian'
 
-const placeCenter = (x, y, shape) => ({
-  ...shape,
-  x: x - shape.width / 2,
-  y: y - shape.height / 2
+const mapDivideBy2 = map(flip(divide)(2))
+const placeCenter = ({x, y, rectangle}) => ({
+  ...rectangle,
+  x: x - rectangle.width / 2,
+  y: y - rectangle.height / 2
 })
 
-// place first rectangle in center of container
-// attempt to place all subsequent rectangles as close to center as possible
+// attempt to place all rectangles as close to center as possible
 // without colliding with sides of container or other rectangles
+// and following Fermat's Spiral outwards
 // complete when no rectangles remain or positioning rules can no longer be met
-export default curry(({containerHeight, containerWidth}, rectangles) => {
-  const centerX = containerWidth / 2
-  const centerY = containerHeight / 2
-  const firstRectangle = head(rectangles)
+export default curry((containerDimensions, rectangles) => {
+  const {containerHeight, containerWidth} = containerDimensions
+  const scalingFactor = last(rectangles).height / 2
+  const [centerX, centerY] = mapDivideBy2([containerWidth, containerHeight])
+  const shiftOriginToBottomLeft = ({x, y}) => ({x: x + centerX, y: y + centerY})
+  const maxRadius = hypoteneuse([centerX, centerY])
+  const createNewRectangle = curry((theta, rectangle, r) => placeCenter({
+    ...shiftOriginToBottomLeft(polarToCartesian(r, theta)),
+    rectangle
+  }))
+
   return reduce(
     (acc, rectangle) => {
-      let x = rectangle
-      let count = 0
+      let theta = 0
       do {
-        if (count++ > 1024) return acc
-        x = placeCenter(
-          Math.random() * (containerWidth - rectangle.width) + rectangle.width / 2,
-          Math.random() * (containerHeight - rectangle.height) + rectangle.height / 2,
-          rectangle
+        const radii = map(multiply(scalingFactor), fermatsSpiral(theta))
+        if (head(radii) > maxRadius) return acc
+        const validRectangleTransducer = compose(
+          map(createNewRectangle(theta, rectangle)),
+          filter(rect => !collidesWithAnotherRectangle(rect, acc)),
+          filter(rect => !collidesWithContainer(rect, containerDimensions))
         )
-      } while (collides(x, acc))
-      return append(x, acc)
+        const validRectangle = head(transduce(
+          validRectangleTransducer,
+          flip(append),
+          [],
+          radii
+        ))
+        if (validRectangle) return append(validRectangle, acc)
+        theta += goldenAngle
+      } while (true)
     },
-    [placeCenter(centerX, centerY, firstRectangle)],
-    tail(rectangles)
+    [],
+    rectangles
   )
 })
