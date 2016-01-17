@@ -39,6 +39,9 @@ $red: red;
   vertical-align: top;
 }
 
+.word-cloud-metadata__total-mentions {
+  line-height: 300%;
+}
 .word-cloud-metadata__negative-mentions {
   color: $red;
 }
