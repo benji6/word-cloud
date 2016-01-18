@@ -37,7 +37,7 @@ export default curry((containerDimensions, rectangles) => {
   const shiftOriginToBottomLeft = ({x, y}) => ({x: x + centerX, y: y + centerY})
   const maxRadius = hypoteneuse([centerX, centerY])
   const createNewRectangle = curry((theta, rectangle, r) => placeCenter({
-    ...shiftOriginToBottomLeft(polarToCartesian(r, theta)),
+    ...shiftOriginToBottomLeft(polarToCartesian({r, theta})),
     rectangle
   }))
 
