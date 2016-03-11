@@ -17,17 +17,6 @@ See `package.json` for comprehensive list of scripts
 
 ## Improvements
 
-### Page weight
-
-The entire Ramda library is imported and bundled but a lot of it is never used. Possible solutions:
-
-- Investigate tree-shaking tools like [Rollup](https://github.com/rollup/rollup)
-- Use a partial build of Ramda
-- Download Ramda over a CDN
-- Manually implement and factor out functions so dependency no longer necessary
-
-Of course, if the app grows this may no longer be such a concern
-
 ### Tests
 
 The view is not currently covered by unit tests. Possible solutions:
