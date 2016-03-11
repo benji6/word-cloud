@@ -1,4 +1,7 @@
-export default theta => {
-  const r = theta ** 0.5
-  return [r, -r]
-}
+import {compose, flip, map, multiply} from 'ramda'
+
+export default compose(
+  flip(map)([1, -1]),
+  multiply,
+  Math.sqrt
+)
