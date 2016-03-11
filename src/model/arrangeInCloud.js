@@ -16,7 +16,6 @@ import collidesWithAnotherRectangle from './collidesWithAnotherRectangle'
 import collidesWithContainer from './collidesWithContainer'
 import fermatsSpiral from '../utils/fermatsSpiral'
 import goldenAngle from '../data/goldenAngle'
-import hypoteneuse from '../utils/hypoteneuse'
 import polarToCartesian from '../utils/polarToCartesian'
 
 const mapDivideBy2 = map(flip(divide)(2))
@@ -35,7 +34,7 @@ export default curry((containerDimensions, rectangles) => {
   const scalingFactor = last(rectangles).height
   const [centerX, centerY] = mapDivideBy2([containerWidth, containerHeight])
   const shiftOriginToBottomLeft = ({x, y}) => ({x: x + centerX, y: y + centerY})
-  const maxRadius = hypoteneuse([centerX, centerY])
+  const maxRadius = Math.hypot([centerX, centerY])
   const createNewRectangle = curry((theta, rectangle, r) => placeCenter({
     ...shiftOriginToBottomLeft(polarToCartesian({r, theta})),
     rectangle
