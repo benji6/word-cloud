@@ -2,10 +2,6 @@ html {
   font-family: sans-serif;
 }
 
-$gray: gray;
-$green: green;
-$red: red;
-
 .word-cloud {
   display: inline-block;
   height: 512px;
@@ -17,6 +13,7 @@ $red: red;
 .word-cloud__word {
   background: none;
   border: none;
+  color: rgba(0, 0, 0, 0);
   cursor: pointer;
   padding: 0;
   position: absolute;
@@ -29,10 +26,6 @@ $red: red;
 .word-cloud__word--size--4 { font-size: 30px }
 .word-cloud__word--size--5 { font-size: 36px }
 .word-cloud__word--size--6 { font-size: 42px }
-
-.word-cloud__word--gray { color: $gray }
-.word-cloud__word--green { color: $green }
-.word-cloud__word--red { color: $red }
 
 .word-cloud-metadata {
   display: inline-block;

@@ -5,6 +5,7 @@ import {
   createElement,
   animateBottom,
   animateLeft,
+  setColor,
   setOnClick,
   textContent
 } from '../view/dom'
@@ -37,7 +38,7 @@ export default (words, wordCloudEl) => {
     animateBottom(clientHeight / 2, y),
     animateLeft(clientWidth / 2, x),
     addClass(`word-cloud__word--size--${size}`),
-    addClass(`word-cloud__word--${color}`),
+    setColor(color),
     addClass('word-cloud__word'),
     documentFragment.appendChild.bind(documentFragment),
     textContent(label)

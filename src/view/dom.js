@@ -31,6 +31,7 @@ export const animateLeft = curry((from, to, el) => (
   setTimeout(partial(translateX, [to, el])),
   translateX(from, el)
 ))
+export const setColor = curry((color, el) => (setTimeout(_ => el.style.color = color), el))
 export const setOnClick = setProperty('onclick')
 export const setPosition = setStyleProperty('position')
 export const setVisibility = setStyleProperty('visibility')
