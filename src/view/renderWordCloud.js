@@ -3,8 +3,8 @@ import {
   addClass,
   createDocumentFragment,
   createElement,
-  setBottom,
-  setLeft,
+  animateBottom,
+  animateLeft,
   setOnClick,
   textContent
 } from '../view/dom'
@@ -12,6 +12,7 @@ import renderMetaData from './renderMetaData'
 
 export default (words, wordCloudEl) => {
   const documentFragment = createDocumentFragment()
+  const {clientHeight, clientWidth} = wordCloudEl
 
   renderMetaData(head(words))
 
@@ -33,8 +34,8 @@ export default (words, wordCloudEl) => {
       positiveMentions,
       totalMentions
     }])),
-    setBottom(y),
-    setLeft(x),
+    animateBottom(clientHeight / 2, y),
+    animateLeft(clientWidth / 2, x),
     addClass(`word-cloud__word--size--${size}`),
     addClass(`word-cloud__word--${color}`),
     addClass('word-cloud__word'),

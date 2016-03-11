@@ -20,6 +20,7 @@ $red: red;
   cursor: pointer;
   padding: 0;
   position: absolute;
+  transition: all 1s ease;
 }
 
 .word-cloud__word--size--1 { font-size: 12px }
