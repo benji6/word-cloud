@@ -42,26 +42,23 @@ export default curry((containerDimensions, rectangles) => {
   }))
 
   return reduce(
-    (acc, rectangle) => {
-      let theta = 0
-      do {
-        const radii = map(multiply(scalingFactor), fermatsSpiral(theta))
-        if (head(radii) > maxRadius) return acc
-        const validRectangleTransducer = compose(
+    (acc, rectangle) => (function recur (theta) {
+      const radii = map(multiply(scalingFactor), fermatsSpiral(theta))
+      if (head(radii) > maxRadius) return acc
+      const validRectangle = head(transduce(
+        compose(
           map(createNewRectangle(theta, rectangle)),
           filter(rect => !collidesWithAnotherRectangle(rect, acc)),
           filter(rect => !collidesWithContainer(rect, containerDimensions))
-        )
-        const validRectangle = head(transduce(
-          validRectangleTransducer,
-          flip(append),
-          [],
-          radii
-        ))
-        if (validRectangle) return append(validRectangle, acc)
-        theta += goldenAngle
-      } while (true)
-    },
+        ),
+        flip(append),
+        [],
+        radii
+      ))
+      return validRectangle
+        ? append(validRectangle, acc)
+        : recur(theta + goldenAngle)
+    }(0)),
     [],
     rectangles
   )
